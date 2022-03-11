@@ -1,0 +1,950 @@
+TABLES
+
+create table Address 
+
+( 
+
+ id int primary key identity(101,1), 
+
+ houseno int not null, 
+
+ locality varchar(225) not null, 
+
+ area varchar(225) not null, 
+
+ landmark varchar(225) not null, 
+
+ city varchar(225) not null, 
+
+ _state varchar(225) not null, 
+
+ pincode varchar(6) not null 
+
+ 
+
+) 
+
+create table Credit_card 
+
+( 
+
+id int primary key identity(101,1), 
+
+cardNo int not null, 
+
+cardHolder varchar(225) not null, 
+
+ ) 
+
+ 
+
+ 
+
+create table Customer 
+
+( 
+
+  userid int primary key identity(101,1), 
+
+  addid int foreign key references Address(id) not null, 
+
+first_name varchar(25) not null, 
+
+last_name varchar(25) not null, 
+
+gender varchar(25) not null, 
+
+phoneNumber varchar(13) not null, 
+
+email varchar(225) not null, 
+
+password varchar(10) not null, 
+
+ccid int foreign key references Credit_card(id), 
+
+) 
+
+ 
+
+create table Debit_card 
+
+(  
+
+id int primary key identity(101,1), 
+
+cardNo int not null, 
+
+cardHolder varchar(225) not null, 
+
+ 
+
+) 
+
+ 
+
+ 
+
+ 
+
+create table Product 
+
+( 
+
+  productId int primary key identity(101,1), 
+
+  productName varchar(30) not null, 
+
+  Category varchar(50) not null, 
+
+  price float not null, 
+
+ brand varchar(225) not null, 
+
+ details varchar(225) not null, 
+
+ aboutProduct varchar(225) not null, 
+
+ countryOfOrigin varchar(225) not null, 
+
+ seller varchar(50) not null, 
+
+ userRating varchar(5) 
+
+) 
+
+create table OrderStatus 
+
+( 
+
+ id int primary key identity(101,1), 
+
+ status varchar(225) not null 
+
+) 
+
+create table PaymentStatus 
+
+( 
+
+ id int primary key identity(101,1), 
+
+ paymentAmount varchar(225) not null, 
+
+  paymentStatus varchar(225) not null 
+
+ 
+
+) 
+
+ 
+
+ 
+
+create table OrderTable 
+
+( 
+
+ id int primary key identity(101,1), 
+
+ cust_id int foreign key references Customer(id) not null, 
+
+ prod_id int foreign key references Product(ProductId) not null, 
+
+order_Date Datetime not null, 
+
+status_id int foreign key references OrderStatus(id) not null, 
+
+payment_id int foreign key references PaymentStatus(id) not null, 
+
+ 
+
+) 
+
+ 
+
+ 
+
+create table OrderTable 
+
+( 
+
+ id int primary key identity(101,1), 
+
+ cust_id int foreign key references Customer(id) not null, 
+
+ prod_id int foreign key references Product(ProductId) not null, 
+
+order_Date Datetime not null, 
+
+status_id int foreign key references OrderStatus(id) not null, 
+
+payment_id int foreign key references PaymentStatus(id) not null 
+
+ 
+
+) 
+
+create table Wallet 
+
+( 
+
+id int primary key identity(101,1), 
+
+cust_id int foreign key references Customer(id) not null, 
+
+cupons varchar(30), 
+
+giftCard varchar(40), 
+
+addMoney float, 
+
+spendMoney float 
+
+) 
+
+create table Cart 
+
+( 
+
+ id int primary key identity(101,1), 
+
+  cust_id int foreign key references Customer(id) not null, 
+
+ prod_id int foreign key references Product(ProductId) not null 
+
+ 
+
+) 
+
+create table WishList 
+
+( 
+
+ id int primary key identity(101,1), 
+
+  cust_id int foreign key references Customer(id) not null, 
+
+ prod_id int foreign key references Product(ProductId) not null 
+
+) 
+
+create table Admin 
+
+( 
+
+id int primary key identity(101,1), 
+
+adminId int not null, 
+
+firstName varchar(30) not null, 
+
+lastName varchar(30) not null, 
+
+phoneNumber varchar(13) not null, 
+
+email Varchar(40) not null, 
+
+role varchar(20) not null 
+
+) 
+
+ 
+
+ 
+
+ 
+
+Store Procedure : 
+
+ 
+
+ 
+
+  
+
+ create procedure InsertCustomer 
+
+ ( 
+
+   
+
+   @addid int, 
+
+   @firstName varchar(25), 
+
+   @lastName varchar(25), 
+
+   @gender varchar(25), 
+
+   @phoneNumber varchar(13), 
+
+   @email varchar(225), 
+
+   @password varchar(10), 
+
+   @ccid int 
+
+ ) 
+
+ as 
+
+ begin 
+
+ insert into Customer(addid, firstName, lastName, gender, phoneNumber, email, password, ccid)  
+
+ values(addid = @addid, firstName = @firstName, lastName @lastName, gender = @gender,  
+
+ phoneNumber = @phoneNumber, email = @email, password = @password, ccid = @ccid) 
+
+ end 
+
+ 
+
+ create procedure UpdateCustomer 
+
+ (   
+
+   @userid int, 
+
+   @firstName varchar(25), 
+
+   @lastName varchar(25), 
+
+   @gender varchar(25), 
+
+   @phoneNumber varchar(13), 
+
+   @email varchar(225), 
+
+   @password varchar(10)   
+
+ ) 
+
+ as 
+
+ begin 
+
+ update Customer set  firstName = @firstName, lastName = @lastName, gender = @gender,  
+
+ phoneNumber = @phoneNumber, email = @email, password = @password where userid = @userid 
+
+ end 
+
+ 
+
+ create procedure DeleteCustomer 
+
+ (   
+
+   @userid int 
+
+   ) 
+
+   as 
+
+   begin delete from Customer where userid = @userid 
+
+   end 
+
+
+
+
+ create procedure InsertAddress 
+
+ ( 
+
+  @houseno int, 
+
+  @locality varchar(225), 
+
+  @area varchar(225), 
+
+  @landMark varchar(225), 
+
+  @city varchar(225), 
+
+  @_state varchar(225), 
+
+  @pincode varchar(6) 
+
+ )as 
+
+ begin 
+
+ insert into Address  
+
+ (houseno, 
+
+ locality, 
+
+ area, 
+
+ landmark, 
+
+ city, 
+
+ state, 
+
+ pincode 
+
+) 
+
+values 
+
+( 
+
+@houseno, 
+
+@locality, 
+
+@area, 
+
+@landMark, 
+
+@city, 
+
+@_state, 
+
+@pincode 
+
+) 
+
+end 
+
+--Update 
+
+create procedure UpdateAddress 
+
+ ( 
+
+  @houseno int, 
+
+  @locality varchar(225), 
+
+  @area varchar(225), 
+
+  @landMark varchar(225), 
+
+  @city varchar(225), 
+
+  @_state varchar(225), 
+
+  @pincode varchar(6) 
+
+ )as 
+
+ begin 
+
+ update Address  
+
+ set  
+
+ houseno = @houseno, 
+
+locality = @locality, 
+
+area = @area, 
+
+landMark = @landMark, 
+
+city = @city, 
+
+state = @_state, 
+
+pincode = @pincode 
+
+where houseno = @houseno 
+
+end 
+
+ 
+
+ 
+
+
+ 
+
+create procedure DeleteAddress 
+
+(@id int) 
+
+as begin 
+
+delete from Address 
+
+where id = @id 
+
+end 
+
+ 
+
+
+ 
+
+ create procedure InsertCustomer 
+
+ ( 
+
+   
+
+   @addid int, 
+
+   @first_name varchar(25), 
+
+   @last_name varchar(25), 
+
+   @gender varchar(25), 
+
+   @phoneNumber varchar(13), 
+
+   @email varchar(225), 
+
+   @password varchar(10), 
+
+   @ccid int 
+
+ ) 
+
+ as 
+
+ begin 
+
+ insert into Customer(addid, firstName, lastName, gender, phoneNumber, email, password, ccid)  
+
+ values(@addid, @first_name, @last_name, @gender, @phoneNumber, @email, @password, @ccid) 
+
+ end 
+
+
+
+ create procedure UpdateCustomer 
+
+ (   
+
+   @userid int, 
+
+   @first_name varchar(25), 
+
+   @last_name varchar(25), 
+
+   @gender varchar(25), 
+
+   @phoneNumber varchar(13), 
+
+   @email varchar(225), 
+
+   @password varchar(10)   
+
+ ) 
+
+ as 
+
+ begin 
+
+ update Customer set  firstName = @first_name, lastName = @last_name, gender = @gender,  
+
+ phoneNumber = @phoneNumber, email = @email, password = @password where id = @userid 
+
+ end 
+
+
+
+ create procedure DeleteCustomer 
+
+ (   
+
+   @userid int 
+
+   ) 
+
+   as 
+
+   begin delete from Customer where id = @userid 
+
+   end 
+
+ 
+
+   
+
+create procedure InsertOrderStatus ( 
+
+@status varchar(225) 
+
+) 
+
+as  
+
+begin  
+
+insert into OrderStatus (status) values( @status)  
+
+end 
+
+--Update 
+
+create procedure UpdateOrderStatus 
+
+( 
+@id int,
+
+@status varchar(225) 
+
+) 
+
+as  
+
+begin 
+
+update OrderStatus set status=@status  
+
+where id=@id  
+
+end  
+
+
+
+create procedure DeleteOrderStatus 
+
+( 
+
+@id int 
+
+) 
+
+as 
+
+begin  
+
+delete from OrderStatus where id = @id 
+
+end 
+
+
+
+create procedure InsertOrderTable 
+
+( 
+
+@cust_id int , 
+
+@prod_id int , 
+
+@order_Date Datetime , 
+
+@status_id int , 
+
+@payment_id int 
+
+) 
+
+as 
+
+begin 
+
+insert into OrderTable(cust_id, prod_id, order_Date, status_id, payment_id) 
+
+values(@cust_id, @prod_id, @order_Date, @status_id, @payment_id) 
+
+end 
+
+ 
+
+
+ 
+
+create procedure UpdateOrderTable 
+
+( 
+
+@id int, 
+
+@cust_id int , 
+
+@prod_id int , 
+
+@order_Date Datetime , 
+
+@status_id int , 
+
+@payment_id int 
+
+) 
+
+as 
+
+begin 
+
+update OrderTable set cust_id = @cust_id, prod_id = @prod_id, order_Date = @order_Date, status_id = @status_id, payment_id = @payment_id where id = @id 
+
+end 
+
+ 
+
+
+
+ 
+
+create procedure DeleteOrderTable 
+
+( 
+
+@id int 
+
+) 
+
+as 
+
+begin delete from OrderTable where id = @id 
+
+end 
+
+ 
+
+ 
+
+
+
+ 
+
+create procedure InserPaymentStatus 
+
+( 
+
+@paymentAmount varchar(225), 
+
+@paymentStatus varchar(225) 
+
+) 
+
+as 
+
+begin 
+
+insert into PaymentStatus(paymentAmount,paymentStatus) values(@paymentAmount,@paymentStatus) 
+
+End 
+
+ 
+
+create procedure UpdatePaymentStatus 
+
+( 
+
+@id int, 
+
+@paymentAmount varchar(225), 
+
+@paymentStatus varchar(225) 
+
+) 
+
+as 
+
+begin 
+
+update PaymentStatus set paymentAmount = @paymentAmount, paymentStatus = @paymentStatus where id = @id 
+
+end 
+
+create procedure DeletePaymentStatus 
+
+( 
+
+@id int  
+
+) 
+
+as 
+
+begin delete from PaymentStatus where id = @id 
+
+end 
+
+ 
+
+create procedure InsertWallet 
+
+( 
+
+@cust_id int, 
+
+@cupons varchar, 
+
+@giftCard varchar, 
+
+@addMoney money, 
+
+@spendMoney money 
+
+) 
+
+as  
+
+begin  
+
+insert into Wallet(cust_id,cupons,giftCard,addMoney,spendMoney) values(@cust_id,@cupons,@giftCard,@addMoney,@spendMoney) 
+
+end 
+
+ 
+
+ 
+
+create procedure UpdateWallet 
+
+( 
+
+@id int, 
+
+@cust_id int, 
+
+@cupons varchar, 
+
+@giftCard varchar, 
+
+@addMoney money, 
+
+@spendMoney money 
+
+) 
+
+as  
+
+begin  
+
+update Wallet set cust_id = @cust_id, cupons = @cupons, giftCard = @giftCard, addMoney = @addMoney, spendMoney = @spendMoney where id = @id 
+
+ 
+
+end 
+
+ 
+
+create procedure DeleteWallet 
+
+( 
+
+@id int 
+
+) 
+
+as 
+
+begin  
+
+delete from Wallet where id = @id  
+
+end 
+
+ 
+ 
+create procedure InsertAdmin
+(@firstName varchar(25),@lastName varchar(25),@gender varchar(25),@phoneNumber varchar(13),@email varchar(225),@password varchar(10),@role varchar(25))
+as 
+begin
+insert into Admin(firstName, lastName, gender, phoneNumber, email, password, role)values(@firstName, @lastName, @gender,@phoneNumber, @email, @password, @role)
+end 
+
+create procedure UpdateAdmin
+(@id int,@firstName varchar(25),@lastName varchar(25),@gender varchar(25),@phoneNumber varchar(13),@email varchar(225),@password varchar(10), @role varchar(25))
+as
+begin 
+update Admin set firstName = @firstName, lastName = @lastName, gender = @gender, phoneNumber = @phoneNumber, email = @email, password = @password, role = @role where id = @id 
+end 
+
+create procedure DeleteAdmin
+(@id int)
+as
+begin 
+delete from Admin where id = @id
+end
+
+create procedure InsertProduct
+(@productName varchar(30),@Category varchar(50),@price float,@brand varchar(225),@details varchar(225),@aboutProduct varchar(225) ,@countryOfOrigin varchar(225),@seller varchar(50),@userRating varchar(5))
+as 
+begin 
+insert into Product(productName, category, price, brand, details, aboutProduct, countryOfOrigin, seller, userRating)values (@productName, @category,  @price, @brand, @details,  @aboutProduct, @countryOfOrigin, @seller, @userRating)
+end
+
+create procedure UpdateProduct
+(@productId int,@productName varchar(30),@Category varchar(50),@price float,@brand varchar(225),@details varchar(225),@aboutProduct varchar(225) ,@countryOfOrigin varchar(225),@seller varchar(50),@userRating varchar(5))
+as
+begin
+update Product set productName = @productName, category = @category, price = @price, brand = @brand, details = @details, aboutProduct = @aboutProduct, countryOfOrigin = @countryOfOrigin, seller = @seller, userRating = @userRating where @productId = @productId
+end
+
+create procedure DeleteProduct
+(@productId int)
+as 
+begin 
+delete from Prodeuct where productId = @productId
+end
+
+
+
+
+
+
+create procedure InsertCart
+(
+@cust_id int ,
+@prod_id int
+)
+as
+begin
+insert into Cart(cust_id, prod_id)
+values( @cust_id, @prod_id)
+end
+
+create procedure UpdateCart
+(
+@id int,
+@cust_id int ,
+@prod_id int
+)
+as
+begin
+update Cart set cust_id = @cust_id, prod_id = @prod_id where id = @id
+end
+
+create procedure DeleteCart
+(
+@id int
+)
+as
+begin 
+delete from Cart where id = @id
+end
+
+create procedure InsertWishlist
+(
+@cust_id int ,
+@prod_id int
+)
+as
+begin
+insert into WishList(cust_id, prod_id)
+values(@cust_id,  @prod_id)
+end
+
+create procedure UpdateWishlist
+(
+@id int,
+@cust_id int ,
+@prod_id int
+)
+as
+begin
+update WishList set cust_id = @cust_id, prod_id = @prod_id where id = @id
+end
+
+create procedure DeleteWishlist
+(
+@id int
+)
+as
+begin 
+delete from Wishlist where id = @id
+end
+
